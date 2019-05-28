@@ -1,12 +1,13 @@
 package pkgUT;
 
 import static org.junit.Assert.*;
+import java.util.LinkedList;
 import org.apache.poi.ss.formula.functions.*;
 import org.junit.Test;
-
 import app.controller.Loan;
+import app.controller.Payment;
 
-public class TestPMT extends Loan{
+public class TestPMT {
 
 	@Test
 	public void test() {
@@ -17,32 +18,26 @@ public class TestPMT extends Loan{
 		double f = 0;
 		boolean t = false;
 		PMT = Math.abs(FinanceLib.pmt(r, n, p, f, t));
-		
 		double PMTExpected = 1162.95;
-		
 		assertEquals(PMTExpected, PMT, 0.01);
+		Loan loanTest = new Loan(20, p , r*1200 , "Start date", 0);	
+		Payment paymentTest = new Payment(loanTest);
+		assertEquals(paymentTest.getActualPmt(), PMTExpected, 0.01);
+		assertEquals(paymentTest.getFormerBalance(), p , 0.01);
 	}
+	
 	@Test
 	public void totalPaymentTest1() {
 		double principle = 200000;
 		int loanTerm = 15;
 		double interestRate = 8;
 		double expected = 344034;
-		double actual = calculateTotalPayments(loanTerm, principle, interestRate);
-		actual = Math.round(actual * 100) / 100;
-		assertEquals(expected, actual, 0);
+		Loan loanTest1 = new Loan(loanTerm ,principle , interestRate , "Start date", 0);	
+		Payment paymentTest1 = new Payment(loanTest1);
+		assertEquals(expected, ((paymentTest1.getActualPmt())*(loanTerm*12)), 1);
+
 	}
-	
-	@Test
-	public void totalPaymentTest2() {
-		double principle = 150000;
-		int loanTerm = 8;
-		double interestRate = 5;
-		double expected = 182302;
-		double actual = calculateTotalPayments(loanTerm, principle, interestRate);
-		actual = Math.round(actual * 100) / 100;
-		assertEquals(expected, actual, 0);			
-	}	
+
 }
 
 

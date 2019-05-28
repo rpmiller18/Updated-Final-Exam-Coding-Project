@@ -10,12 +10,11 @@ import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.LinkedList;
 
-
-import javafx.scene.control.Label;
-
-public class LoanCalcViewController extends Loan implements Initializable  {
+public class LoanCalcViewController implements Initializable  {
 	private StudentCalc SC = null;
 	@FXML
 	private TextField LoanAmount;	
@@ -27,10 +26,8 @@ public class LoanCalcViewController extends Loan implements Initializable  {
 	private DatePicker PaymentStartDate;	
 	@FXML
 	private TextField AdditionalPayment;
-		@FXML
+	@FXML
 	private Label lblTotalPayments;
-		@FXML
-	private Label lblTotalInterest;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -48,18 +45,25 @@ public class LoanCalcViewController extends Loan implements Initializable  {
 	 */
 	@FXML
 	private void btnCalcLoan(ActionEvent event) {
+		
+		int iTerm = Integer.parseInt(Term.getText());
+		System.out.println("Length of loan in years: " + iTerm);
 
-		System.out.println("Amount: " + LoanAmount.getText());	
-		double cLoanAmount = Double.parseDouble(LoanAmount.getText());
-		System.out.println("Amount: " + cLoanAmount);
-		lblTotalPayments.setText(String.valueOf(calculateTotalPayments(
-				Integer.parseInt(Term.getText()), 
-				Double.parseDouble(LoanAmount.getText()), 
-				Double.parseDouble(InterestRate.getText()))));
-		lblTotalInterest.setText(String.valueOf(calculateTotalPayments(
-				Integer.parseInt(Term.getText()), 
-				Double.parseDouble(LoanAmount.getText()), 
-				Double.parseDouble(InterestRate.getText()))
-				-Double.parseDouble(LoanAmount.getText())));
+		double doubleLoanAmount = Double.parseDouble(LoanAmount.getText());
+		System.out.println("Loan Amount: " + doubleLoanAmount);
+		
+		LocalDate localDate = PaymentStartDate.getValue();
+		System.out.println("Loan Start Date: " +localDate);
+		
+		lblTotalPayments.setText("123");
+		
+		double doubleAdditionalPayment = Double.parseDouble(AdditionalPayment.getText());
+		System.out.println("Extra Payment: " + doubleAdditionalPayment);
+		
+		double doubleInterestRate = Double.parseDouble(InterestRate.getText());
+		System.out.println("Interest rate on loan is: " + doubleInterestRate);
+		
+		Loan newLoan = new Loan(iTerm, doubleLoanAmount, doubleInterestRate, "Start Date", 0);
+
 	}
 }
